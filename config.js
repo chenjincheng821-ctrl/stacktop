@@ -36,7 +36,7 @@ window.SITE_CONFIG = {
      * 想直接推飞书群：见 README「方案 2：Cloudflare Worker + 飞书机器人」，
      * 填 Worker 地址即可 —— 两种方案填的是同一个配置项，前端代码不用改。
      */
-    endpoint: '',
+    endpoint: 'https://formspree.io/f/xrpbrzkp',
 
     successTip:      '已收到！我会在 10 分钟内通过你留下的方式联系你。',
     unconfiguredTip: '表单通道还没配置好，先直接加微信找我更快。',
