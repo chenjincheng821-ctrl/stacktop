@@ -1,0 +1,11 @@
+# 栈顶工作室 STACKTOP · 允许全站收录，排除开发文件
+# 绑定自定义域名后，把 Sitemap 那一行的域名换掉即可
+
+User-agent: *
+Allow: /
+Disallow: /dev/
+Disallow: /README.md
+Disallow: /.gitignore
+Disallow: /.vercelignore
+
+Sitemap: https://stacktop.pages.dev/sitemap.xml

@@ -170,6 +170,164 @@
   }
 
   /* ─────────────────────────────────────────────────────────────────
+   *  3.5 案例展示（卡片 + 详情弹窗）
+   * ───────────────────────────────────────────────────────────────── */
+  function renderCases() {
+    var wrap = $('#caseGrid');
+    if (!wrap || !CFG.cases) return;
+
+    wrap.innerHTML = CFG.cases.map(function (c, i) {
+      var img = c.cover || (c.gallery && c.gallery[0] && c.gallery[0].src) || '';
+      return '' +
+      '<article class="reveal js-case glass glass-hover group cursor-pointer overflow-hidden rounded-2xl" ' +
+              'data-case="' + esc(c.id) + '" role="button" tabindex="0" ' +
+              'aria-label="查看案例详情：' + esc(c.title) + '" data-delay="' + (i * 80) + '">' +
+        '<span class="block overflow-hidden border-b border-white/10" style="background:#05060a">' +
+          '<img src="' + esc(img) + '" alt="' + esc(c.title) + ' 界面截图" loading="lazy" decoding="async" ' +
+               'class="block w-full h-auto transition-transform duration-500 group-hover:scale-[1.03]">' +
+        '</span>' +
+        '<span class="block p-5 sm:p-6">' +
+          '<span class="flex items-center justify-between gap-3">' +
+            '<span class="chip chip-brand">' + esc(c.tag) + '</span>' +
+            '<span class="font-mono text-[11px] text-slate-500 transition group-hover:text-cyan-300">查看详情 →</span>' +
+          '</span>' +
+          '<span class="mt-4 block text-base sm:text-lg font-semibold text-white leading-snug">' + esc(c.title) + '</span>' +
+          '<span class="mt-2 block text-sm text-slate-400 leading-relaxed">' + esc(c.tagline) + '</span>' +
+          '<span class="mt-4 flex flex-wrap gap-1.5">' +
+            (c.abilities || []).map(function (a) { return '<span class="chip">' + esc(a) + '</span>'; }).join('') +
+          '</span>' +
+        '</span>' +
+      '</article>';
+    }).join('');
+
+    $$('.js-case', wrap).forEach(function (el) {
+      el.addEventListener('click', function () { openCase(el.getAttribute('data-case')); });
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCase(el.getAttribute('data-case')); }
+      });
+    });
+  }
+
+  function openCase(id) {
+    var modal = $('#caseModal');
+    var body = $('#caseModalBody');
+    if (!modal || !body) return;
+
+    var c = (CFG.cases || []).filter(function (x) { return x.id === id; })[0];
+    if (!c) return;
+
+    body.innerHTML = '' +
+      '<div class="flex flex-wrap items-center gap-2">' +
+        '<span class="chip chip-brand">' + esc(c.tag) + '</span>' +
+        '<span class="chip">' + esc(c.note || '数据已脱敏') + '</span>' +
+      '</div>' +
+
+      '<h3 id="caseModalTitle" class="mt-4 text-xl sm:text-2xl font-bold leading-snug text-white">' + esc(c.title) + '</h3>' +
+      '<p class="mt-2 text-sm font-medium grad-text sm:text-base">' + esc(c.tagline) + '</p>' +
+
+      (c.gallery || []).map(function (g) {
+        return '<figure class="mt-5">' +
+                 '<img src="' + esc(g.src) + '" alt="' + esc(c.title + ' — ' + g.caption) + '" ' +
+                      'loading="lazy" decoding="async" class="block w-full rounded-xl border border-white/10">' +
+                 '<figcaption class="mt-2 text-xs text-slate-500">' + esc(g.caption) + '</figcaption>' +
+               '</figure>';
+      }).join('') +
+
+      '<div class="mt-6 grid gap-5 sm:grid-cols-2">' +
+        '<div>' +
+          '<h4 class="font-mono text-[11px] uppercase tracking-[0.16em] text-cyan-400">客户当时的问题</h4>' +
+          '<p class="mt-2.5 text-sm leading-relaxed text-slate-400">' + esc(c.pain) + '</p>' +
+        '</div>' +
+        '<div>' +
+          '<h4 class="font-mono text-[11px] uppercase tracking-[0.16em] text-violet-400">交付内容</h4>' +
+          '<ul class="mt-2.5 space-y-2">' +
+            (c.features || []).map(function (f) {
+              return '<li class="flex gap-2.5 text-sm leading-relaxed text-slate-400">' +
+                       '<span class="mt-[7px] h-1 w-1 flex-none rounded-full bg-cyan-400"></span>' +
+                       '<span>' + esc(f) + '</span></li>';
+            }).join('') +
+          '</ul>' +
+        '</div>' +
+      '</div>' +
+
+      '<div class="grad-line my-6"></div>' +
+
+      '<div class="flex flex-wrap items-center justify-between gap-3">' +
+        '<div class="flex flex-wrap gap-1.5">' +
+          (c.abilities || []).map(function (a) { return '<span class="chip chip-brand">' + esc(a) + '</span>'; }).join('') +
+        '</div>' +
+        '<a href="#contact" class="btn-primary !px-4 !py-2.5 text-sm js-case-cta">想做类似的？聊聊 →</a>' +
+      '</div>' +
+
+      '<p class="mt-4 text-[11px] leading-relaxed text-slate-600">' +
+        '截图仅用于展示界面能力，个股名称与金额等敏感信息已做模糊处理，不含真实客户数据。</p>';
+
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    modal.scrollTop = 0;
+
+    var cta = $('.js-case-cta', body);
+    if (cta) cta.addEventListener('click', closeCase);
+  }
+
+  function closeCase() {
+    var modal = $('#caseModal');
+    if (!modal || modal.classList.contains('hidden')) return;
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  function bindCaseModal() {
+    var modal = $('#caseModal');
+    if (!modal) return;
+    var close = $('#caseModalClose');
+    var mask = $('#caseModalMask');
+    if (close) close.addEventListener('click', closeCase);
+    if (mask) mask.addEventListener('click', closeCase);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeCase();
+    });
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
+   *  3.6 结构化数据（让搜索结果展示更丰富）
+   * ───────────────────────────────────────────────────────────────── */
+  function injectStructuredData() {
+    var data = {
+      '@context': 'https://schema.org',
+      '@type': 'ProfessionalService',
+      name: CFG.brand.name,
+      alternateName: CFG.brand.mark,
+      description: CFG.brand.slogan,
+      areaServed: { '@type': 'Country', name: '中国' },
+      knowsLanguage: 'zh-CN',
+      knowsAbout: CFG.projects.map(function (p) { return p.name; }),
+      makesOffer: CFG.projects.map(function (p) {
+        return {
+          '@type': 'Offer',
+          priceCurrency: 'CNY',
+          priceSpecification: {
+            '@type': 'PriceSpecification',
+            minPrice: p.priceMin,
+            maxPrice: p.priceMax,
+            priceCurrency: 'CNY'
+          },
+          itemOffered: {
+            '@type': 'Service',
+            name: p.name,
+            description: p.features.join('、')
+          }
+        };
+      })
+    };
+
+    var el = document.createElement('script');
+    el.type = 'application/ld+json';
+    el.textContent = JSON.stringify(data);
+    document.head.appendChild(el);
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
    *  4. 报价计算器
    * ───────────────────────────────────────────────────────────────── */
   var state = { projectId: CFG.projects[0].id, addons: new Set() };
@@ -602,11 +760,14 @@
   function init() {
     applyConfigToDom();
     renderServices();
+    renderCases();          // 必须在 bindReveal 之前，案例卡的 .reveal 才有人观察
     renderCalculator();
+    bindCaseModal();
     bindWechatCopy();
     bindForm();
     bindNav();
     bindReveal();
+    injectStructuredData();
 
     var y = $('#year');
     if (y) y.textContent = new Date().getFullYear();

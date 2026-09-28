@@ -184,6 +184,50 @@ window.SITE_CONFIG = {
     { label: '品牌官网 + 出海', project: 'website', addons: ['ui', 'deploy'] },
     { label: '自动化脚本提效', project: 'script',  addons: ['coach'] },
     { label: '毕设辅导跑通',   project: 'thesis',  addons: ['coach', 'deploy'] }
+  ],
+
+  /* ── 8. 案例展示 ──────────────────────────────────────────────────── */
+  /*  真实交付过的项目。界面截图已脱敏（个股名称、个人收益数字均已模糊）。
+   *  描述只讲「解决什么问题、交付了什么」，不涉及实现方式、数据来源与技术选型。 */
+  cases: [
+    {
+      id: 'stock-workbench',
+      tag: '数据可视化 · 桌面 Web',
+      title: 'A股全流程复盘工作台',
+      tagline: '把散在五六个网站的数据，收进一屏',
+      cover: 'assets/cases/stock-workbench-dark.png',
+      gallery: [
+        { src: 'assets/cases/stock-workbench-dark.png', caption: '盘中模式 · 涨幅梯队 / 板块强度 / 指数分时叠加' },
+        { src: 'assets/cases/stock-workbench-light.png', caption: '复盘模式 · 盘前资讯聚合 / 涨停归因 / 历史对比' }
+      ],
+      pain: '每天收盘后要在行情软件、财经网站、论坛之间来回切换——看涨停梯队开一个，看板块强度开另一个，指数分时再开一个。信息散、耗时长、容易漏。',
+      features: [
+        '盘中模式：涨幅梯队分层、强势股筛选、板块强度排序、指数分时叠加',
+        '复盘模式：盘前资讯聚合、涨停原因归因、历史复盘对比、自选收藏',
+        '一屏信息密度对标专业终端，支持自动刷新与个性化筛选'
+      ],
+      abilities: ['多源数据聚合', '高密度可视化', '实时渲染'],
+      note: '界面数据已脱敏'
+    },
+    {
+      id: 'income-tracker',
+      tag: '移动端 · PWA',
+      title: '多设备收益记账助手',
+      tagline: '几台设备同时跑，收益一眼看清',
+      cover: 'assets/cases/didicheck-mobile.png',
+      gallery: [
+        { src: 'assets/cases/didicheck-mobile.png', caption: '多设备并列对比 · 日 / 月双维度自动累计' }
+      ],
+      pain: '同时用多台设备跑多个平台，收益散在各自 App 里。月底算账靠手抄，也不知道哪台设备、哪个平台最划算。',
+      features: [
+        '多台设备并列对比，收入 / 支出 / 净额 / 提现一屏汇总',
+        '日、月双维度自动累计，随时切换',
+        '移动优先设计，单手可操作',
+        '设备随时增删，数据自动归集'
+      ],
+      abilities: ['移动端 PWA', '多维数据聚合', '轻量记账交互'],
+      note: '界面数据已脱敏'
+    }
   ]
 
 };

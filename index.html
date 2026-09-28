@@ -393,54 +393,10 @@
       <p class="mt-4 text-slate-400 leading-relaxed">以下为脱敏后的项目摘要，完整截图与代码片段可加微信索取。</p>
     </div>
 
-    <div class="mt-10 grid gap-4 md:grid-cols-3">
-
-      <article class="reveal glass glass-hover rounded-2xl p-5 sm:p-6 flex flex-col">
-        <div class="flex items-center justify-between">
-          <span class="chip chip-brand">微信小程序</span>
-          <span class="font-mono text-xs text-slate-500">8 天</span>
-        </div>
-        <h3 class="mt-4 text-base font-semibold text-white leading-snug">连锁餐饮 · 堂食扫码点单系统</h3>
-        <p class="mt-2.5 text-sm text-slate-400 leading-relaxed flex-1">
-          扫码点单、会员积分、优惠券核销，订单实时推送到后厨热敏打印机。
-        </p>
-        <div class="mt-4 flex flex-wrap gap-1.5">
-          <span class="chip">点单</span><span class="chip">积分</span><span class="chip">打印联动</span>
-        </div>
-      </article>
-
-      <article class="reveal glass glass-hover rounded-2xl p-5 sm:p-6 flex flex-col" data-delay="80">
-        <div class="flex items-center justify-between">
-          <span class="chip chip-brand">独立站</span>
-          <span class="font-mono text-xs text-slate-500">5 天</span>
-        </div>
-        <h3 class="mt-4 text-base font-semibold text-white leading-snug">跨境电商 · 品牌出海官网</h3>
-        <p class="mt-2.5 text-sm text-slate-400 leading-relaxed flex-1">
-          Bento 风格主页、中英双语、海外 CDN 加速，Lighthouse SEO 评分 92。
-        </p>
-        <div class="mt-4 flex flex-wrap gap-1.5">
-          <span class="chip">多语言</span><span class="chip">CDN</span><span class="chip">SEO</span>
-        </div>
-      </article>
-
-      <article class="reveal glass glass-hover rounded-2xl p-5 sm:p-6 flex flex-col" data-delay="160">
-        <div class="flex items-center justify-between">
-          <span class="chip chip-brand">Python 自动化</span>
-          <span class="font-mono text-xs text-slate-500">2 天</span>
-        </div>
-        <h3 class="mt-4 text-base font-semibold text-white leading-snug">多平台数据采集与预警机器人</h3>
-        <p class="mt-2.5 text-sm text-slate-400 leading-relaxed flex-1">
-          定时采集多平台数据 → 清洗入库 → 命中规则自动推送到企业微信群。
-        </p>
-        <div class="mt-4 flex flex-wrap gap-1.5">
-          <span class="chip">定时任务</span><span class="chip">数据清洗</span><span class="chip">企微告警</span>
-        </div>
-      </article>
-
-    </div>
+    <div id="caseGrid" class="mt-10 grid gap-4 md:grid-cols-2"></div>
 
     <p class="reveal mt-6 text-center text-sm text-slate-500" data-delay="80">
-      更多案例（含脱敏截图、技术栈、交付周期）
+      更多案例（含完整截图与交付细节）
       <a href="#contact" class="text-cyan-300 hover:text-cyan-200">加微信索取 →</a>
     </p>
 
@@ -697,6 +653,28 @@
     </div>
   </div>
 </footer>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     案例详情弹窗（内容由 app.js 从 config.js 的 cases 渲染）
+     ══════════════════════════════════════════════════════════════════ -->
+<div id="caseModal" class="hidden fixed inset-0 z-[100] overflow-y-auto overscroll-contain" role="dialog" aria-modal="true" aria-labelledby="caseModalTitle">
+  <div id="caseModalMask" class="fixed inset-0 bg-black/80" style="-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)"></div>
+
+  <div class="relative mx-auto my-4 w-[min(94vw,60rem)] sm:my-8">
+    <div class="overflow-hidden rounded-2xl border border-white/12" style="background:#080a12;box-shadow:0 40px 90px -30px rgba(0,0,0,.95)">
+      <div class="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-white/10 px-4 py-3 sm:px-6" style="background:rgba(8,10,18,.96)">
+        <span class="font-mono text-[11px] uppercase tracking-[0.18em] text-slate-400">案例详情</span>
+        <button id="caseModalClose" type="button" aria-label="关闭"
+                class="grid h-8 w-8 place-items-center rounded-lg border border-white/12 bg-white/5 text-slate-300 transition hover:bg-white/10 hover:text-white">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="h-4 w-4">
+            <path d="M18 6 6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div id="caseModalBody" class="px-4 py-5 sm:px-6 sm:py-7"></div>
+    </div>
+  </div>
+</div>
 
 <!-- Toast 容器 -->
 <div id="toast" role="status" aria-live="polite"></div>

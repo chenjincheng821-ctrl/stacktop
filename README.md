@@ -11,15 +11,24 @@
 
 ```
 个人超级网站/
-├── index.html          页面骨架（7 个板块 + 导航 + 页脚）
-├── config.js           ★ 全站配置中心 —— 改价格 / 改联系方式只动这里
+├── index.html          页面骨架（7 个板块 + 导航 + 页脚 + 案例弹窗）
+├── config.js           ★ 全站配置中心 —— 改价格 / 联系方式 / 案例只动这里
 ├── styles.css          暗黑极客视觉层（玻璃拟态、渐变、动画）
-├── app.js              交互逻辑（计算器算法、表单、复制、动画）
+├── app.js              交互逻辑（计算器、案例弹窗、表单、结构化数据）
+├── sitemap.xml         站点地图（绑自定义域名后记得改里面的域名）
+├── robots.txt          爬虫规则
+├── 404.html            品牌化错误页
+├── functions/
+│   └── _middleware.js  拦截 /dev/*、README.md 等非站点文件的公开访问
 ├── dev/
-│   ├── check-calc.js   ★ 改价后的报价自检脚本（见「改价后自检」）
-│   └── fix-qr.py       二维码图片规整工具（见「替换二维码」）
+│   ├── check-calc.js   报价自检（穷举全部组合，检查封顶/取整/倒挂）
+│   ├── fix-qr.py       二维码图片规整（裁正方形、补静区、转纯白底 PNG）
+│   ├── redact-cases.py 案例截图脱敏（模糊个股名称与个人金额）
+│   ├── test-page.js    页面渲染测试（jsdom 真实执行 app.js）
+│   └── cases-raw/      案例原始截图（已 gitignore，绝不提交/部署）
 └── assets/
-    └── wechat-qr.png   微信二维码（600×600 纯白底，已规整）
+    ├── wechat-qr.png   微信二维码（600×600 纯白底）
+    └── cases/          案例展示图（已脱敏）
 ```
 
 > `dev/` 目录不参与线上运行，可以安全部署，也可以加进 `.gitignore`。
@@ -318,6 +327,52 @@ function json(obj, status, cors) {
 
 > ⚠️ Vercel / Cloudflare 的节点在境外，**不需要 ICP 备案**，但国内访问速度一般。
 > 如果主要客户在国内，考虑换腾讯云 / 阿里云静态托管（需要备案）。
+
+---
+
+## 七、案例区维护
+
+案例数据在 `config.js` 的 `cases` 数组里，改文案只动这里。每个案例支持：
+
+```js
+{
+  id: 'stock-workbench',            // 唯一标识
+  tag: '数据可视化 · 桌面 Web',      // 卡片上的分类标签
+  title: 'A股全流程复盘工作台',
+  tagline: '把散在五六个网站的数据，收进一屏',
+  cover: 'assets/cases/xxx.png',    // 卡片封面
+  gallery: [                        // 弹窗里的大图，可多张
+    { src: 'assets/cases/xxx.png', caption: '图片说明' }
+  ],
+  pain: '客户当时的问题……',
+  features: ['交付内容 1', '交付内容 2'],
+  abilities: ['多源数据聚合', '高密度可视化'],   // 能力标签
+  note: '界面数据已脱敏'
+}
+```
+
+### 换案例截图时的脱敏流程
+
+1. 把原图放进 `dev/cases-raw/`（该目录已 gitignore，**绝不会提交或部署**）
+2. 在 `dev/redact-cases.py` 里按原图尺寸定义要模糊的矩形区域
+3. 跑脚本：`python dev/redact-cases.py`，输出到 `assets/cases/`
+4. **检查输出图**，确认敏感信息确实被遮住
+5. 更新 `config.js` 的 `cases`
+
+> ⚠️ **脱敏两条底线**：涉及证券的截图必须模糊个股名称与代码，避免被解读为荐股；
+> 涉及个人金额的截图必须模糊数字。脚本会自动在右下角加「数据已脱敏」角标。
+
+### 跑测试
+
+改完页面结构后，可以真实执行一遍渲染逻辑再上线：
+
+```bash
+NODE_PATH="C:/Users/solfang/.workbuddy-ai/tmp-test/node_modules" node dev/test-page.js
+```
+
+（依赖 jsdom，已装在 `~/.workbuddy-ai/tmp-test/node_modules`。若换机器需重装：`npm install jsdom --prefix <该目录>`）
+
+会校验服务矩阵、案例卡片、计算器、弹窗开关、配置注入、结构化数据等 23 项。
 
 ---
 
