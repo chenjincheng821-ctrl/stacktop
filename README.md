@@ -153,18 +153,30 @@ node dev/check-calc.js
 
 ### 1. 推到 GitHub
 
+**本地部分已经做完了**（仓库已 `git init`，首次提交 `a893f44` 已完成），你只需要建远端仓库 + 推送：
+
+**① 建仓库**：打开 <https://github.com/new>
+
+- Repository name 填 `stacktop`
+- ⚠️ **不要勾** "Add a README file" / ".gitignore" / "license"
+  —— 勾了会在远端先生成文件，推送时会报 `rejected`，得多绕一圈
+
+**② 推送**（在项目目录里跑）：
+
 ```bash
-cd 个人超级网站
+cd "D:/workbuddy国际文件存放/个人超级网站"
 
-git init
-git add .
-git commit -m "feat: 个人技术工作室单页网站 v1"
-
-# 在 github.com 上新建一个空仓库（不要勾选 README），然后：
-git branch -M main
-git remote add origin https://github.com/你的用户名/仓库名.git
+git remote add origin https://github.com/你的用户名/stacktop.git
 git push -u origin main
 ```
+
+第一次推送会弹出浏览器让你登录 GitHub 授权，点一下即可，以后不用再登。
+
+> 如果弹窗没出现、终端反而问你要用户名密码：**GitHub 已经不接受密码了**，
+> 需要去 <https://github.com/settings/tokens> 生成一个 Personal Access Token，
+> 勾选 `repo` 权限，把它当密码粘进去。
+>
+> 如果报 `remote origin already exists`，把 `add` 换成 `set-url` 再跑一次。
 
 ### 2. 接入 Vercel
 
