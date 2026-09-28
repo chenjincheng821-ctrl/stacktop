@@ -1,6 +1,7 @@
 # 不部署到线上的文件（只影响部署，不影响 git 提交）
-# 这些是开发工具和文档，线上访问不到，没必要传
+# 这些是开发工具、文档和 Cloudflare 专用文件，线上访问不到，没必要传
 dev/
 README.md
 .gitignore
 .vercelignore
+functions/
