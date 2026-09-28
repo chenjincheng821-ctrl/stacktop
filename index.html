@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>栈顶工作室 STACKTOP | 独立全栈开发 · 7 天把想法变成可上线产品</title>
+<meta name="description" content="栈顶工作室：微信/抖音小程序、现代化独立站、跨平台 APP、Python 自动化脚本、毕设调试辅导定制开发。独立全栈开发，100% 源码交付，拒绝二次加价，一对一售后，支持全国远程协作。">
+<meta name="keywords" content="小程序开发,独立站搭建,Flutter开发,Python自动化,毕业设计辅导,定制开发,全栈开发,栈顶工作室">
+<meta name="author" content="STACKTOP">
+<meta name="theme-color" content="#04050a">
+<meta name="format-detection" content="telephone=no">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="栈顶工作室 STACKTOP | 独立全栈开发">
+<meta property="og:description" content="小程序 / 独立站 / 跨平台 APP / Python 自动化 / 毕设辅导。100% 源码交付，拒绝二次加价。">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%2304050a'/%3E%3Cpath d='M36 34 L22 50 L36 66' fill='none' stroke='%2322d3ee' stroke-width='9' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M64 34 L78 50 L64 66' fill='none' stroke='%23a78bfa' stroke-width='9' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink: { 950: '#04050a', 900: '#07080e', 800: '#0c0e16', 700: '#141824', 600: '#1c2130' }
+        },
+        fontFamily: {
+          sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI',
+                 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'sans-serif'],
+          mono: ['JetBrains Mono', 'SFMono-Regular', 'Consolas', 'Menlo', 'monospace']
+        },
+        maxWidth: { '8xl': '88rem' }
+      }
+    }
+  };
+</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="antialiased">
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     导航
+     ══════════════════════════════════════════════════════════════════ -->
+<header class="fixed top-0 inset-x-0 z-50">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <div id="navShell" class="mt-3 rounded-2xl glass px-3.5 sm:px-4 py-2.5 transition-all duration-300">
+      <div class="flex items-center justify-between gap-3">
+
+        <a href="#top" class="flex items-center gap-2.5 shrink-0">
+          <span class="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-cyan-400 to-violet-500 font-mono text-[13px] font-bold text-ink-950">&lt;/&gt;</span>
+          <span class="leading-tight hidden xs:block sm:block">
+            <span class="block font-mono text-[12px] font-semibold tracking-wider text-white" data-brand-mark>STACKTOP</span>
+            <span class="block text-[10.5px] text-slate-400" data-brand-name>独立全栈开发工作室</span>
+          </span>
+        </a>
+
+        <nav class="hidden lg:flex items-center gap-0.5 text-sm">
+          <a href="#services" class="nav-link">服务矩阵</a>
+          <a href="#calc" class="nav-link">报价测算</a>
+          <a href="#process" class="nav-link">交付流程</a>
+          <a href="#cases" class="nav-link">案例</a>
+          <a href="#faq" class="nav-link">常见问题</a>
+        </nav>
+
+        <div class="flex items-center gap-2 shrink-0">
+          <a href="#calc" class="btn-primary !px-3.5 !py-2 text-[13px] hidden sm:inline-flex">即时预算测算</a>
+          <button id="menuBtn" type="button" aria-label="打开菜单" aria-expanded="false"
+                  class="lg:hidden grid h-9 w-9 place-items-center rounded-xl border border-white/10 bg-white/5 text-slate-200">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="h-5 w-5">
+              <path d="M4 7h16M4 12h16M4 17h16"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="mobileMenu" class="hidden lg:hidden mt-2 rounded-2xl glass p-2">
+      <a href="#services" class="block rounded-xl px-4 py-3 text-sm text-slate-300 hover:bg-white/5">服务矩阵</a>
+      <a href="#calc"     class="block rounded-xl px-4 py-3 text-sm text-slate-300 hover:bg-white/5">报价测算</a>
+      <a href="#process"  class="block rounded-xl px-4 py-3 text-sm text-slate-300 hover:bg-white/5">交付流程</a>
+      <a href="#cases"    class="block rounded-xl px-4 py-3 text-sm text-slate-300 hover:bg-white/5">案例</a>
+      <a href="#faq"      class="block rounded-xl px-4 py-3 text-sm text-slate-300 hover:bg-white/5">常见问题</a>
+      <a href="#contact"  class="block rounded-xl px-4 py-3 text-sm text-cyan-300 hover:bg-white/5">联系开发者</a>
+    </div>
+  </div>
+</header>
+
+
+<main id="top">
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     第 1 屏 · Hero
+     ══════════════════════════════════════════════════════════════════ -->
+<section class="relative pt-32 pb-16 sm:pt-40 sm:pb-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+
+    <div class="reveal inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/[0.07] px-3.5 py-1.5 text-xs text-emerald-200">
+      <span class="relative flex h-2 w-2">
+        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+        <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
+      </span>
+      当前可接单 · 本周剩余 2 个开发档期
+    </div>
+
+    <h1 class="reveal mt-6 text-3xl sm:text-5xl lg:text-[3.4rem] font-bold tracking-tight leading-[1.18] text-white" data-delay="60">
+      把你的数字化想法，<br class="hidden sm:block">
+      最快 <span class="grad-text">7 天</span>变成<span class="grad-text">可上线产品</span>
+    </h1>
+
+    <p class="reveal mt-6 max-w-2xl text-base sm:text-lg leading-relaxed text-slate-400" data-delay="120">
+      一个人干完需求梳理、UI、前端、后端、部署全流程。没有中间商、没有转包、没有二次加价。
+      需求说清楚，我给你一个能跑的成品和一套干净的源码。
+    </p>
+
+    <div class="reveal mt-8 flex flex-wrap gap-3" data-delay="180">
+      <a href="#calc" class="btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+          <rect x="4" y="2.5" width="16" height="19" rx="2.5"/><path d="M8 7h8M8 11h3M8 15h3M15 11v6"/>
+        </svg>
+        即时预算测算
+      </a>
+      <a href="#contact" class="btn-ghost">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+          <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.9-.9L3 20.5l1.5-4.6A8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/>
+        </svg>
+        联系开发者
+      </a>
+    </div>
+
+    <!-- 信任标签 -->
+    <div class="reveal mt-9 flex flex-wrap gap-2" data-delay="240">
+      <span class="chip chip-brand">独立全栈开发</span>
+      <span class="chip">100% 源码交付</span>
+      <span class="chip">拒绝二次加价</span>
+      <span class="chip">一对一售后</span>
+      <span class="chip">阶段验收付款</span>
+    </div>
+
+    <!-- 数据条 -->
+    <div class="reveal mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4" data-delay="300">
+      <div class="glass glass-hover rounded-2xl p-4 sm:p-5">
+        <div class="font-mono text-xl sm:text-2xl font-bold text-white">1–25<span class="text-sm font-normal text-slate-400 ml-1">天</span></div>
+        <div class="mt-1 text-xs text-slate-400">最快交付周期</div>
+      </div>
+      <div class="glass glass-hover rounded-2xl p-4 sm:p-5">
+        <div class="font-mono text-xl sm:text-2xl font-bold grad-text">100<span class="text-sm font-normal ml-0.5">%</span></div>
+        <div class="mt-1 text-xs text-slate-400">源码交付率</div>
+      </div>
+      <div class="glass glass-hover rounded-2xl p-4 sm:p-5">
+        <div class="font-mono text-xl sm:text-2xl font-bold text-white">0<span class="text-sm font-normal text-slate-400 ml-1">次</span></div>
+        <div class="mt-1 text-xs text-slate-400">二次加价</div>
+      </div>
+      <div class="glass glass-hover rounded-2xl p-4 sm:p-5">
+        <div class="font-mono text-xl sm:text-2xl font-bold text-white" data-response-time>10 分钟内回复</div>
+        <div class="mt-1 text-xs text-slate-400">平均响应速度</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     第 2 屏 · 服务矩阵（Bento Grid）
+     ══════════════════════════════════════════════════════════════════ -->
+<section id="services" class="relative py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+
+    <div class="reveal max-w-3xl">
+      <span class="font-mono text-xs tracking-[0.2em] text-cyan-400">/ 01 &nbsp;SERVICES</span>
+      <h2 class="mt-3 text-2xl sm:text-4xl font-bold tracking-tight text-white">六条业务线，覆盖你从 0 到上线的全部环节</h2>
+      <p class="mt-4 text-slate-400 leading-relaxed">
+        从几百块的自动化脚本，到几万块的跨平台 APP —— 规模不同，交付标准一样：能跑、能改、能上线。
+      </p>
+    </div>
+
+    <div id="serviceGrid" class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+
+    <!-- 被动增值服务（不参与报价计算，仅展示） -->
+    <div class="reveal mt-4" data-delay="80">
+      <div class="glass glass-hover rounded-2xl p-5 sm:p-6">
+        <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <div class="flex items-start gap-4">
+            <div class="icon-chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-[22px] w-[22px]">
+                <rect x="3" y="3.4" width="18" height="6.2" rx="2.1"/><rect x="3" y="14.4" width="18" height="6.2" rx="2.1"/><path d="M7 6.5h.02M7 17.5h.02"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-base sm:text-lg font-semibold text-white">被动增值服务 · 长期陪伴</h3>
+              <p class="mt-1 text-sm text-slate-400">项目上线之后，才是真正需要人的时候。</p>
+              <div class="mt-3 flex flex-wrap gap-1.5">
+                <span class="chip">云服务器部署运维</span>
+                <span class="chip">日常 Bug 修复包月</span>
+                <span class="chip">域名与 SSL 证书维护</span>
+                <span class="chip">定期巡检与备份</span>
+                <span class="chip">每月含固定工时</span>
+              </div>
+            </div>
+          </div>
+          <div class="sm:text-right sm:shrink-0">
+            <div class="text-[11px] uppercase tracking-wider text-slate-500">包月参考</div>
+            <div class="font-mono text-sm font-semibold grad-text">¥300 – ¥1,200 / 月</div>
+            <div class="mt-1 text-[11px] text-slate-500">每月含 4 小时工时，超出另计</div>
+            <a href="#contact" class="mt-3 inline-block text-xs text-cyan-300 hover:text-cyan-200">聊聊运维需求 →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     第 3 屏 · 交互式报价计算器
+     ══════════════════════════════════════════════════════════════════ -->
+<section id="calc" class="relative py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+
+    <div class="reveal max-w-3xl">
+      <span class="font-mono text-xs tracking-[0.2em] text-violet-400">/ 02 &nbsp;ESTIMATOR</span>
+      <h2 class="mt-3 text-2xl sm:text-4xl font-bold tracking-tight text-white">30 秒算清你的项目要花多少钱</h2>
+      <p class="mt-4 text-slate-400 leading-relaxed">
+        选项目类型、勾附加功能，右边实时出价。算完可以一键把方案发给我，不用自己抄数字。
+      </p>
+    </div>
+
+    <div class="mt-10 grid gap-5 lg:grid-cols-[1.4fr_1fr] lg:items-start lg:gap-6">
+
+      <!-- ── 左：配置区 ── -->
+      <div class="space-y-5">
+
+        <div class="reveal">
+          <div class="glass rounded-2xl p-5 sm:p-6">
+            <div class="flex items-center gap-2 text-xs text-slate-400">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-cyan-400">
+                <path d="M13 2 4.5 13.5H11L10 22l8.5-11.5H12z"/>
+              </svg>
+              懒人通道 · 一键套用常见组合
+            </div>
+            <div id="presetList" class="mt-3 flex flex-wrap gap-2"></div>
+          </div>
+        </div>
+
+        <div class="reveal" data-delay="60">
+          <div class="glass rounded-2xl p-5 sm:p-6">
+            <div class="flex items-baseline gap-3">
+              <span class="font-mono text-xs text-cyan-400">STEP 01</span>
+              <h3 class="text-base font-semibold text-white">选择项目类型</h3>
+              <span class="text-xs text-slate-500">单选</span>
+            </div>
+            <div id="projectList" class="mt-4 grid gap-2.5 sm:grid-cols-2" role="radiogroup" aria-label="项目类型"></div>
+          </div>
+        </div>
+
+        <div class="reveal" data-delay="120">
+          <div class="glass rounded-2xl p-5 sm:p-6">
+            <div class="flex items-baseline gap-3">
+              <span class="font-mono text-xs text-violet-400">STEP 02</span>
+              <h3 class="text-base font-semibold text-white">勾选附加功能</h3>
+              <span class="text-xs text-slate-500">可多选 · 按当前类型自动过滤</span>
+            </div>
+            <div id="addonList" class="mt-4 grid gap-2.5 sm:grid-cols-2"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── 右：结果面板 ── -->
+      <div class="reveal lg:sticky lg:top-28" data-delay="180">
+        <div class="glass rounded-2xl p-5 sm:p-6">
+          <div class="flex items-center gap-2">
+            <span class="relative flex h-2 w-2">
+              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75"></span>
+              <span class="relative inline-flex h-2 w-2 rounded-full bg-cyan-400"></span>
+            </span>
+            <span class="font-mono text-[11px] uppercase tracking-[0.18em] text-slate-400">实时测算结果</span>
+          </div>
+          <div class="grad-line my-4"></div>
+          <div id="resultBox"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     第 4 屏 · 交付流程与保障
+     ══════════════════════════════════════════════════════════════════ -->
+<section id="process" class="relative py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+
+    <div class="reveal max-w-3xl">
+      <span class="font-mono text-xs tracking-[0.2em] text-emerald-400">/ 03 &nbsp;PROCESS</span>
+      <h2 class="mt-3 text-2xl sm:text-4xl font-bold tracking-tight text-white">四步交付，每一步你都能看到东西</h2>
+      <p class="mt-4 text-slate-400 leading-relaxed">
+        不做"付完钱等消息"的项目。每个阶段都有明确的交付物和验收动作，不满意可以停。
+      </p>
+    </div>
+
+    <div class="relative mt-12">
+      <div class="hidden lg:block absolute left-[12.5%] right-[12.5%] top-[27px] h-px bg-gradient-to-r from-cyan-400/50 via-violet-400/50 to-emerald-400/50"></div>
+
+      <div class="relative grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+
+        <div class="reveal text-center sm:text-left">
+          <div class="mx-auto sm:mx-0 grid h-14 w-14 place-items-center rounded-2xl glass font-mono text-sm font-bold text-cyan-300">01</div>
+          <h3 class="mt-4 text-base font-semibold text-white">需求清单确认</h3>
+          <p class="mt-2 text-sm text-slate-400 leading-relaxed">把功能点逐条列成清单，明确边界、周期、报价。确认后不再随意变更范围。</p>
+        </div>
+
+        <div class="reveal text-center sm:text-left" data-delay="80">
+          <div class="mx-auto sm:mx-0 grid h-14 w-14 place-items-center rounded-2xl glass font-mono text-sm font-bold text-cyan-300">02</div>
+          <h3 class="mt-4 text-base font-semibold text-white">阶段定金 30%~50%</h3>
+          <p class="mt-2 text-sm text-slate-400 leading-relaxed">定金到位即开工。分阶段付款，你降低风险，我也确认需求边界。</p>
+        </div>
+
+        <div class="reveal text-center sm:text-left" data-delay="160">
+          <div class="mx-auto sm:mx-0 grid h-14 w-14 place-items-center rounded-2xl glass font-mono text-sm font-bold text-violet-300">03</div>
+          <h3 class="mt-4 text-base font-semibold text-white">真实环境联调演示</h3>
+          <p class="mt-2 text-sm text-slate-400 leading-relaxed">部署到真实服务器跑给你看，不是本地截图。功能对不上就继续改。</p>
+        </div>
+
+        <div class="reveal text-center sm:text-left" data-delay="240">
+          <div class="mx-auto sm:mx-0 grid h-14 w-14 place-items-center rounded-2xl glass font-mono text-sm font-bold text-emerald-300">04</div>
+          <h3 class="mt-4 text-base font-semibold text-white">源码全量交付 + 尾款</h3>
+          <p class="mt-2 text-sm text-slate-400 leading-relaxed">源码、数据库、部署文档一次性交付，你验收通过再付尾款。</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 保障承诺 -->
+    <div class="reveal mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-4" data-delay="120">
+      <div class="glass glass-hover rounded-2xl p-5">
+        <div class="text-cyan-300">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+            <path d="M12 2.8 4 6v6c0 4.6 3.2 8.4 8 9.2 4.8-.8 8-4.6 8-9.2V6z"/><path d="M9 12l2.2 2.2L15.5 10"/>
+          </svg>
+        </div>
+        <h3 class="mt-3 text-sm font-semibold text-white">源码 100% 交付</h3>
+        <p class="mt-1.5 text-xs text-slate-400 leading-relaxed">无加密、无后门、无授权限制，你可以自己改、自己部署。</p>
+      </div>
+      <div class="glass glass-hover rounded-2xl p-5">
+        <div class="text-cyan-300">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+            <rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 3v3M16 3v3"/>
+          </svg>
+        </div>
+        <h3 class="mt-3 text-sm font-semibold text-white">分阶段验收付款</h3>
+        <p class="mt-1.5 text-xs text-slate-400 leading-relaxed">每个阶段验收通过再进下一步，进度不透明可以随时叫停。</p>
+      </div>
+      <div class="glass glass-hover rounded-2xl p-5">
+        <div class="text-cyan-300">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+            <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.9-.9L3 20.5l1.5-4.6A8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/>
+          </svg>
+        </div>
+        <h3 class="mt-3 text-sm font-semibold text-white">全程一对一沟通</h3>
+        <p class="mt-1.5 text-xs text-slate-400 leading-relaxed">对接的就是写代码的人，没有客服转述、没有信息损耗。</p>
+      </div>
+      <div class="glass glass-hover rounded-2xl p-5">
+        <div class="text-cyan-300">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+            <path d="M14.5 3.5 20.5 9.5 9 21H3v-6z"/><path d="M12.5 5.5 18.5 11.5"/>
+          </svg>
+        </div>
+        <h3 class="mt-3 text-sm font-semibold text-white">交付后 7 天免费修 Bug</h3>
+        <p class="mt-1.5 text-xs text-slate-400 leading-relaxed">上线初期的问题免费处理，环境部署远程帮你调到跑通。</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     第 5 屏 · 案例
+     ══════════════════════════════════════════════════════════════════ -->
+<section id="cases" class="relative py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+
+    <div class="reveal max-w-3xl">
+      <span class="font-mono text-xs tracking-[0.2em] text-cyan-400">/ 04 &nbsp;CASES</span>
+      <h2 class="mt-3 text-2xl sm:text-4xl font-bold tracking-tight text-white">做过的东西</h2>
+      <p class="mt-4 text-slate-400 leading-relaxed">以下为脱敏后的项目摘要，完整截图与代码片段可加微信索取。</p>
+    </div>
+
+    <div class="mt-10 grid gap-4 md:grid-cols-3">
+
+      <article class="reveal glass glass-hover rounded-2xl p-5 sm:p-6 flex flex-col">
+        <div class="flex items-center justify-between">
+          <span class="chip chip-brand">微信小程序</span>
+          <span class="font-mono text-xs text-slate-500">8 天</span>
+        </div>
+        <h3 class="mt-4 text-base font-semibold text-white leading-snug">连锁餐饮 · 堂食扫码点单系统</h3>
+        <p class="mt-2.5 text-sm text-slate-400 leading-relaxed flex-1">
+          扫码点单、会员积分、优惠券核销，订单实时推送到后厨热敏打印机。
+        </p>
+        <div class="mt-4 flex flex-wrap gap-1.5">
+          <span class="chip">点单</span><span class="chip">积分</span><span class="chip">打印联动</span>
+        </div>
+      </article>
+
+      <article class="reveal glass glass-hover rounded-2xl p-5 sm:p-6 flex flex-col" data-delay="80">
+        <div class="flex items-center justify-between">
+          <span class="chip chip-brand">独立站</span>
+          <span class="font-mono text-xs text-slate-500">5 天</span>
+        </div>
+        <h3 class="mt-4 text-base font-semibold text-white leading-snug">跨境电商 · 品牌出海官网</h3>
+        <p class="mt-2.5 text-sm text-slate-400 leading-relaxed flex-1">
+          Bento 风格主页、中英双语、海外 CDN 加速，Lighthouse SEO 评分 92。
+        </p>
+        <div class="mt-4 flex flex-wrap gap-1.5">
+          <span class="chip">多语言</span><span class="chip">CDN</span><span class="chip">SEO</span>
+        </div>
+      </article>
+
+      <article class="reveal glass glass-hover rounded-2xl p-5 sm:p-6 flex flex-col" data-delay="160">
+        <div class="flex items-center justify-between">
+          <span class="chip chip-brand">Python 自动化</span>
+          <span class="font-mono text-xs text-slate-500">2 天</span>
+        </div>
+        <h3 class="mt-4 text-base font-semibold text-white leading-snug">多平台数据采集与预警机器人</h3>
+        <p class="mt-2.5 text-sm text-slate-400 leading-relaxed flex-1">
+          定时采集多平台数据 → 清洗入库 → 命中规则自动推送到企业微信群。
+        </p>
+        <div class="mt-4 flex flex-wrap gap-1.5">
+          <span class="chip">定时任务</span><span class="chip">数据清洗</span><span class="chip">企微告警</span>
+        </div>
+      </article>
+
+    </div>
+
+    <p class="reveal mt-6 text-center text-sm text-slate-500" data-delay="80">
+      更多案例（含脱敏截图、技术栈、交付周期）
+      <a href="#contact" class="text-cyan-300 hover:text-cyan-200">加微信索取 →</a>
+    </p>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     第 6 屏 · 常见问题
+     ══════════════════════════════════════════════════════════════════ -->
+<section id="faq" class="relative py-16 sm:py-24">
+  <div class="mx-auto max-w-4xl px-4 sm:px-6">
+
+    <div class="reveal text-center">
+      <span class="font-mono text-xs tracking-[0.2em] text-violet-400">/ 05 &nbsp;FAQ</span>
+      <h2 class="mt-3 text-2xl sm:text-4xl font-bold tracking-tight text-white">合作前你大概会问这些</h2>
+    </div>
+
+    <div class="mt-10 space-y-2.5">
+
+      <details class="reveal faq glass">
+        <summary>源码真的全部给我吗？</summary>
+        <div class="px-5 pb-5 text-sm leading-relaxed text-slate-400">
+          是的。尾款结清后交付完整源码 + 数据库脚本 + 部署文档，无加密、无后门、无授权限制。你可以自己改、自己部署，也可以随时找别人接手，我不会做任何技术锁定。
+        </div>
+      </details>
+
+      <details class="reveal faq glass">
+        <summary>开发过程中能改需求吗？</summary>
+        <div class="px-5 pb-5 text-sm leading-relaxed text-slate-400">
+          可以。同一阶段内的小调整免费；跨阶段的大改动会先重新评估工期和费用，跟你确认之后才动手，绝不"先做完再报价"。
+        </div>
+      </details>
+
+      <details class="reveal faq glass">
+        <summary>怎么付款？会不会被骗？</summary>
+        <div class="px-5 pb-5 text-sm leading-relaxed text-slate-400">
+          分阶段付款：需求确认后付 30%~50% 定金开工，真实环境联调演示通过后再付尾款。你随时能看到进度和可运行的东西，不会出现"付了钱就没动静"的情况。
+        </div>
+      </details>
+
+      <details class="reveal faq glass">
+        <summary>交付后跑不起来怎么办？</summary>
+        <div class="px-5 pb-5 text-sm leading-relaxed text-slate-400">
+          交付后 7 天内免费修 Bug。如果是环境或部署问题，我远程帮你调到跑通为止，并且会录屏讲一遍，确保你自己能启动和维护这个项目。
+        </div>
+      </details>
+
+      <details class="reveal faq glass">
+        <summary>需要签合同吗？</summary>
+        <div class="px-5 pb-5 text-sm leading-relaxed text-slate-400">
+          小额项目走微信沟通 + 阶段付款即可，双方都灵活；金额超过 1 万元的项目建议签电子合同，明确交付范围、周期和验收标准，对彼此都是保障。
+        </div>
+      </details>
+
+      <details class="reveal faq glass">
+        <summary>能开发票吗？</summary>
+        <div class="px-5 pb-5 text-sm leading-relaxed text-slate-400">
+          可以开普通发票，需要提前说明，税点另计。长期合作或金额较大的项目可以走对公转账。
+        </div>
+      </details>
+
+      <details class="reveal faq glass">
+        <summary>毕设辅导具体做什么？会帮我代做吗？</summary>
+        <div class="px-5 pb-5 text-sm leading-relaxed text-slate-400">
+          做的是<strong class="text-slate-300">调试、排错、源码逐行讲解、环境部署和答辩演示准备</strong>——目标是让你自己讲得清楚、跑得起来。
+          不代写论文、不代做课程设计作业、不提供可直接提交的成品。如果你的项目已经有代码但跑不通，或者想搞懂某段逻辑，这条线很适合你。
+        </div>
+      </details>
+
+      <details class="reveal faq glass">
+        <summary>为什么有最低起做价？小需求能便宜点吗？</summary>
+        <div class="px-5 pb-5 text-sm leading-relaxed text-slate-400">
+          最低起做价 ¥1,000。这不是摆架子——一个需求从沟通、确认、开发到交付，固定成本就在那里，
+          再小的项目也要走完整流程。与其报一个做不好的低价，不如把预算花在真正能跑起来的东西上。
+          如果你的预算确实有限，可以直接告诉我，我帮你把范围砍到能做的部分。
+        </div>
+      </details>
+
+      <details class="reveal faq glass">
+        <summary>我需要提前准备什么？</summary>
+        <div class="px-5 pb-5 text-sm leading-relaxed text-slate-400">
+          一份需求说明（哪怕只有几句话）、能参考的同类案例、素材（图片 / 文案 / Logo），以及能及时确认需求的时间。这几样越齐全，交付越快、越准、越便宜。
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     第 7 屏 · 线索沉淀与触达闭环
+     ══════════════════════════════════════════════════════════════════ -->
+<section id="contact" class="relative py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+
+    <div class="reveal max-w-3xl">
+      <span class="font-mono text-xs tracking-[0.2em] text-emerald-400">/ 06 &nbsp;CONTACT</span>
+      <h2 class="mt-3 text-2xl sm:text-4xl font-bold tracking-tight text-white">说说你想做什么</h2>
+      <p class="mt-4 text-slate-400 leading-relaxed">
+        不确定能不能做、不知道要多少钱，都可以先聊。聊完不合适也没关系，不收费、不推销。
+      </p>
+    </div>
+
+    <div class="mt-10 grid gap-5 lg:grid-cols-[0.85fr_1.15fr]">
+
+      <!-- 微信卡片 -->
+      <div id="wechatCard" class="reveal">
+        <div class="glass rounded-2xl p-6 h-full flex flex-col items-center text-center">
+
+          <h3 class="text-lg font-semibold text-white">扫码加微信，直接聊</h3>
+          <p class="mt-2 text-sm text-slate-400">备注「开发需求」，我会优先通过</p>
+
+          <div class="qr-frame mt-5">
+            <img data-wechat-qr src="assets/wechat-qr.png" alt="微信二维码，扫码添加 Logicalfan" width="200" height="200"
+                 class="h-[200px] w-[200px]"
+                 onerror="this.style.display='none';var f=document.getElementById('qrFallback');if(f)f.style.display='flex';">
+            <div id="qrFallback" class="hidden h-[200px] w-[200px] flex-col items-center justify-center gap-2 rounded-lg bg-slate-100 text-center text-xs leading-relaxed text-slate-500">
+              <span>二维码加载失败</span>
+              <span>可直接搜索微信号添加</span>
+            </div>
+          </div>
+
+          <div class="mt-5 w-full">
+            <div class="text-[11px] uppercase tracking-wider text-slate-500">微信号</div>
+            <div class="mt-2 flex items-center gap-2">
+              <code class="min-w-0 flex-1 truncate rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 font-mono text-sm text-cyan-200" data-wechat-id>Logicalfan</code>
+              <button type="button" data-copy-wechat
+                      class="btn-ghost !px-3 !py-2.5 text-xs shrink-0" aria-label="复制微信号">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                  <rect x="9" y="9" width="12" height="12" rx="2.2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+                复制
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-5 w-full space-y-2.5 text-left">
+            <div class="flex items-center gap-2.5 text-sm text-slate-400">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 shrink-0 text-cyan-400">
+                <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/>
+              </svg>
+              <span data-work-hours>周一至周日 09:00 – 23:00（北京时间）</span>
+            </div>
+            <div class="flex items-center gap-2.5 text-sm text-slate-400">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 shrink-0 text-cyan-400">
+                <path d="M20 10.5c0 5.5-8 12-8 12s-8-6.5-8-12a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10.5" r="2.8"/>
+              </svg>
+              <span data-location>北京 · 支持全国远程协作</span>
+            </div>
+            <div class="flex items-center gap-2.5 text-sm text-slate-400">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 shrink-0 text-cyan-400">
+                <rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3 6.5 9 6.5 9-6.5"/>
+              </svg>
+              <a href="mailto:hello@example.com" data-email class="hover:text-cyan-300">hello@example.com</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 留言表单 -->
+      <div class="reveal" data-delay="90">
+        <div class="glass rounded-2xl p-5 sm:p-6">
+          <h3 class="text-lg font-semibold text-white">或者，填个表让我主动找你</h3>
+          <p class="mt-2 text-sm text-slate-400">
+            算过价的话，点计算器里的「把方案发给开发者」会自动带过来，你只要补联系方式。
+          </p>
+
+          <div id="formNotice" class="mt-4"></div>
+
+          <form id="leadForm" class="mt-4 space-y-3.5" novalidate>
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off"
+                   style="position:absolute;left:-9999px;opacity:0" aria-hidden="true">
+
+            <div class="grid gap-3.5 sm:grid-cols-2">
+              <div>
+                <label for="f-name" class="mb-1.5 block text-xs text-slate-400">怎么称呼你 <span class="text-rose-400">*</span></label>
+                <input id="f-name" name="name" type="text" class="field" placeholder="陈哥 / 王同学" required>
+              </div>
+              <div>
+                <label for="f-contact" class="mb-1.5 block text-xs text-slate-400">联系方式 <span class="text-rose-400">*</span></label>
+                <input id="f-contact" name="contact" type="text" class="field" placeholder="微信号 / 手机号 / 邮箱" required>
+              </div>
+            </div>
+
+            <div class="grid gap-3.5 sm:grid-cols-2">
+              <div>
+                <label for="f-type" class="mb-1.5 block text-xs text-slate-400">项目类型</label>
+                <input id="f-type" name="type" type="text" class="field bg-white/[0.015]" placeholder="未选择（可去上面测算）" readonly>
+              </div>
+              <div>
+                <label for="f-budget" class="mb-1.5 block text-xs text-slate-400">预算区间</label>
+                <input id="f-budget" name="budget" type="text" class="field bg-white/[0.015]" placeholder="未测算" readonly>
+              </div>
+            </div>
+
+            <div>
+              <label for="f-detail" class="mb-1.5 block text-xs text-slate-400">需求描述</label>
+              <textarea id="f-detail" name="detail" rows="4" class="field resize-y"
+                        placeholder="想做什么、给谁用、有没有参考的产品、什么时候要。写得越具体，我回复越准。"></textarea>
+            </div>
+
+            <button id="formSubmit" type="submit" class="btn-primary w-full">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                <path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/>
+              </svg>
+              提交需求
+            </button>
+
+            <p class="text-[11px] leading-relaxed text-slate-500 text-center">
+              你的信息只用于这次沟通，不会用于任何其他用途。
+            </p>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     页脚
+     ══════════════════════════════════════════════════════════════════ -->
+<footer class="relative border-t border-white/[0.07] py-10">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <div class="flex items-center gap-2.5">
+          <span class="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-cyan-400 to-violet-500 font-mono text-[11px] font-bold text-ink-950">&lt;/&gt;</span>
+          <span class="font-mono text-[13px] font-semibold tracking-wider text-white" data-brand-mark>STACKTOP</span>
+        </div>
+        <p class="mt-3 text-xs text-slate-500" data-slogan>独立全栈开发 · 100% 源码交付 · 拒绝二次加价 · 一对一售后</p>
+      </div>
+
+      <nav class="flex flex-wrap gap-x-5 gap-y-2 text-xs text-slate-500">
+        <a href="#services" class="hover:text-cyan-300">服务矩阵</a>
+        <a href="#calc" class="hover:text-cyan-300">报价测算</a>
+        <a href="#process" class="hover:text-cyan-300">交付流程</a>
+        <a href="#faq" class="hover:text-cyan-300">常见问题</a>
+        <a href="#contact" class="hover:text-cyan-300">联系方式</a>
+      </nav>
+    </div>
+
+    <div class="grad-line my-6"></div>
+
+    <div class="flex flex-col gap-2 text-[11px] text-slate-600 sm:flex-row sm:items-center sm:justify-between">
+      <span>© <span id="year">2026</span> <span data-brand-mark>STACKTOP</span> · 保留所有权利</span>
+      <span>本站报价均为参考区间，最终以需求清单确认为准</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast 容器 -->
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

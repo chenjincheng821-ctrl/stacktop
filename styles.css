@@ -1,0 +1,332 @@
+/* ==========================================================================
+ *  styles.css —— 暗黑极客视觉层
+ *  Tailwind 负责布局，这里只负责「Tailwind 做不了的质感」：
+ *  玻璃拟态、微渐变、网格背景、光晕、滚动揭示动画。
+ * ========================================================================== */
+
+:root {
+  --bg:          #04050a;
+  --glass-bg:    rgba(255, 255, 255, 0.045);
+  --glass-bd:    rgba(255, 255, 255, 0.09);
+  --glass-bd-hi: rgba(255, 255, 255, 0.20);
+  --brand:       #22d3ee;
+  --brand-2:     #8b5cf6;
+  --ok:          #34d399;
+}
+
+/* ── 基础 ──────────────────────────────────────────────────────────── */
+html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
+
+body {
+  background-color: var(--bg);
+  color: #e2e8f0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+               'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* 页面底层：两团渐变光 + 极淡网格 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(60rem 40rem at 15% -10%, rgba(34, 211, 238, 0.13), transparent 60%),
+    radial-gradient(50rem 40rem at 85% 5%,  rgba(139, 92, 246, 0.13), transparent 60%),
+    radial-gradient(60rem 50rem at 50% 110%, rgba(16, 185, 129, 0.07), transparent 60%);
+  pointer-events: none;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 20%, transparent 85%);
+          mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 20%, transparent 85%);
+  pointer-events: none;
+}
+
+::selection { background: rgba(34, 211, 238, 0.3); color: #fff; }
+
+/* ── 滚动条 ────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #07080e; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(34, 211, 238, 0.45), rgba(139, 92, 246, 0.45));
+  border-radius: 99px;
+  border: 2px solid #07080e;
+}
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #22d3ee, #8b5cf6); }
+
+/* ── 玻璃拟态 ──────────────────────────────────────────────────────── */
+.glass {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.018));
+  border: 1px solid var(--glass-bd);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+          backdrop-filter: blur(14px) saturate(150%);
+}
+
+.glass-hover {
+  transition: border-color .35s ease, transform .35s cubic-bezier(.2, .7, .2, 1),
+              box-shadow .35s ease, background .35s ease;
+}
+.glass-hover:hover {
+  border-color: var(--glass-bd-hi);
+  transform: translateY(-3px);
+  box-shadow: 0 18px 48px -20px rgba(34, 211, 238, 0.45);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.025));
+}
+
+/* 顶部导航滚动态 */
+.nav-solid {
+  background: rgba(4, 5, 10, 0.72) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 12px 40px -20px rgba(0, 0, 0, 0.9);
+}
+
+/* ── 渐变文字 ──────────────────────────────────────────────────────── */
+.grad-text {
+  background: linear-gradient(100deg, #a5f3fc 0%, #22d3ee 32%, #818cf8 66%, #c4b5fd 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}
+
+.grad-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.55), rgba(139, 92, 246, 0.55), transparent);
+}
+
+/* ── 按钮 ──────────────────────────────────────────────────────────── */
+.btn-primary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  border-radius: 0.875rem;
+  padding: 0.75rem 1.4rem;
+  font-weight: 600;
+  color: #04050a;
+  background: linear-gradient(100deg, #67e8f9, #22d3ee 45%, #a78bfa);
+  box-shadow: 0 10px 34px -12px rgba(34, 211, 238, 0.75);
+  transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+  box-shadow: 0 16px 44px -12px rgba(34, 211, 238, 0.9);
+}
+.btn-primary:active { transform: translateY(0); }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  border-radius: 0.875rem;
+  padding: 0.75rem 1.4rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  border: 1px solid var(--glass-bd);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  transition: border-color .25s ease, transform .25s ease, background .25s ease;
+}
+.btn-ghost:hover {
+  border-color: var(--glass-bd-hi);
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+/* 导航链接下划线 */
+.nav-link {
+  position: relative;
+  padding: .45rem .8rem;
+  border-radius: .6rem;
+  color: #94a3b8;
+  transition: color .25s ease, background .25s ease;
+}
+.nav-link:hover { color: #e2e8f0; background: rgba(255, 255, 255, 0.05); }
+
+/* ── 服务卡片图标底 ────────────────────────────────────────────────── */
+.icon-chip {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: linear-gradient(150deg, rgba(34, 211, 238, 0.18), rgba(139, 92, 246, 0.18));
+  color: #67e8f9;
+  flex: none;
+}
+
+/* ── 标签 ──────────────────────────────────────────────────────────── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.04);
+  padding: .28rem .68rem;
+  font-size: 0.75rem;
+  color: #cbd5e1;
+  white-space: nowrap;
+}
+
+.chip-brand {
+  border-color: rgba(34, 211, 238, 0.35);
+  background: rgba(34, 211, 238, 0.09);
+  color: #a5f3fc;
+}
+
+/* ── 计算器：选项卡 ────────────────────────────────────────────────── */
+.opt {
+  position: relative;
+  display: block;
+  cursor: pointer;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.022);
+  padding: 0.9rem 1rem;
+  transition: border-color .22s ease, background .22s ease, transform .22s ease;
+  text-align: left;
+  width: 100%;
+}
+.opt:hover { border-color: rgba(255, 255, 255, 0.22); background: rgba(255, 255, 255, 0.05); }
+
+.opt.is-on {
+  border-color: rgba(34, 211, 238, 0.65);
+  background: linear-gradient(140deg, rgba(34, 211, 238, 0.13), rgba(139, 92, 246, 0.10));
+  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.22), 0 12px 34px -18px rgba(34, 211, 238, 0.8);
+}
+
+.opt.is-on .opt-tick { opacity: 1; transform: scale(1); }
+.opt-tick {
+  opacity: 0;
+  transform: scale(.5);
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+/* ── 计算结果面板：数字跳动 ────────────────────────────────────────── */
+.price-pulse { animation: pricePulse .45s cubic-bezier(.2, .7, .2, 1); }
+@keyframes pricePulse {
+  0%   { opacity: .35; transform: translateY(5px) scale(.985); }
+  100% { opacity: 1;   transform: translateY(0)   scale(1); }
+}
+
+/* ── 滚动揭示 ──────────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .75s cubic-bezier(.2, .7, .2, 1),
+              transform .75s cubic-bezier(.2, .7, .2, 1);
+  will-change: opacity, transform;
+}
+.reveal.in { opacity: 1; transform: none; }
+
+/* ── FAQ 手风琴 ────────────────────────────────────────────────────── */
+details.faq { border-radius: 0.875rem; overflow: hidden; }
+details.faq summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 1.05rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-weight: 500;
+  color: #e2e8f0;
+  transition: background .25s ease;
+}
+details.faq summary::-webkit-details-marker { display: none; }
+details.faq summary:hover { background: rgba(255, 255, 255, 0.04); }
+details.faq summary::after {
+  content: '';
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-right: 1.5px solid #67e8f9;
+  border-bottom: 1.5px solid #67e8f9;
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform .3s ease;
+}
+details.faq[open] summary::after { transform: rotate(225deg) translateY(-2px); }
+details.faq[open] summary { color: #a5f3fc; }
+
+/* ── 流程连接线 ────────────────────────────────────────────────────── */
+.step-line {
+  position: absolute;
+  top: 1.6rem;
+  left: 50%;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(34, 211, 238, 0.55), rgba(139, 92, 246, 0.55));
+}
+
+/* ── 表单控件 ──────────────────────────────────────────────────────── */
+.field {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.7rem 0.9rem;
+  color: #e2e8f0;
+  font-size: 0.9rem;
+  transition: border-color .22s ease, box-shadow .22s ease, background .22s ease;
+  outline: none;
+}
+.field::placeholder { color: #64748b; }
+.field:focus {
+  border-color: rgba(34, 211, 238, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.13);
+}
+
+/* ── Toast ─────────────────────────────────────────────────────────── */
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: 2rem;
+  z-index: 999;
+  transform: translate(-50%, 140%);
+  opacity: 0;
+  transition: transform .4s cubic-bezier(.2, .7, .2, 1), opacity .4s ease;
+  pointer-events: none;
+  max-width: min(92vw, 26rem);
+}
+#toast.show { transform: translate(-50%, 0); opacity: 1; }
+
+/* ── 二维码占位提示 ────────────────────────────────────────────────── */
+.qr-frame {
+  border-radius: 1rem;
+  padding: 0.65rem;
+  background: #fff;
+  box-shadow: 0 20px 50px -22px rgba(34, 211, 238, 0.9);
+}
+.qr-frame img { display: block; border-radius: .55rem; }
+
+/* ── 无障碍：尊重系统「减少动态效果」──────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .price-pulse { animation: none; }
+  .glass-hover:hover { transform: none; }
+  .btn-primary:hover, .btn-ghost:hover { transform: none; }
+}
+
+/* ── 打印 ──────────────────────────────────────────────────────────── */
+@media print {
+  body::before, body::after { display: none; }
+  #nav, #toast { display: none !important; }
+}
