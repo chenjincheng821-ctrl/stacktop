@@ -24,10 +24,12 @@
 │   ├── check-calc.js   报价自检（穷举全部组合，检查封顶/取整/倒挂）
 │   ├── fix-qr.py       二维码图片规整（裁正方形、补静区、转纯白底 PNG）
 │   ├── redact-cases.py 案例截图脱敏（模糊个股名称与个人金额）
+│   ├── make-og.py      生成社交分享卡片（og:image）
 │   ├── test-page.js    页面渲染测试（jsdom 真实执行 app.js）
 │   └── cases-raw/      案例原始截图（已 gitignore，绝不提交/部署）
 └── assets/
     ├── wechat-qr.png   微信二维码（600×600 纯白底）
+    ├── og-cover.png    社交分享缩略图（1200×630）
     └── cases/          案例展示图（已脱敏）
 ```
 

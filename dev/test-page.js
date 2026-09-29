@@ -75,6 +75,15 @@ qa('#caseGrid article')[1].click();
 check('标题正确', q('#caseModalTitle').textContent, '多设备收益记账助手');
 check('含脱敏说明', q('#caseModalBody').textContent.includes('已做模糊处理'), true);
 
+console.log('\n=== SEO / 分享 ===');
+const ogImage = doc.querySelector('meta[property="og:image"]');
+check('og:image 已配置', ogImage ? ogImage.getAttribute('content') : '(缺失)',
+      'https://stacktop.pages.dev/assets/og-cover.png');
+check('og:image 是绝对地址', ogImage ? /^https:\/\//.test(ogImage.getAttribute('content')) : false, true);
+check('twitter:image 已配置', !!doc.querySelector('meta[name="twitter:image"]'), true);
+check('canonical/og:url 已配置', !!doc.querySelector('meta[property="og:url"]'), true);
+check('分享卡片文件存在', fs.existsSync(path.join(dir, 'assets/og-cover.png')), true);
+
 console.log('\n=== 结果 ===');
 console.log('通过 ' + pass + ' 项，失败 ' + fail + ' 项');
 process.exit(fail ? 1 : 0);
