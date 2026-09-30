@@ -27,3 +27,4 @@ npm-debug.log*
 
 # 案例原始截图（含真实个股信息与个人数据），只留本地，绝不提交/部署
 dev/cases-raw/
+dev/cases-clean/

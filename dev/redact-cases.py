@@ -9,19 +9,19 @@ import os
 from PIL import Image, ImageFilter, ImageDraw, ImageFont
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # 项目根目录
-OUT = os.path.join(BASE, "assets", "cases")
+OUT = os.path.join(BASE, "assets", "cases")          # 脱敏后的图（会部署，带角标，供弹窗大图用）
+RAW = os.path.join(BASE, "dev", "cases-raw")         # 原始截图（已 gitignore）
+CLEAN = os.path.join(BASE, "dev", "cases-clean")     # 无角标版（供封面脚本用，已 gitignore）
 
 # ── 图 1：A股看盘工作台（深色）────────────────────────────────────────
 # 坐标以原图 1912x962 为基准（用 _grid.png 校准得出）
 # 只模糊「名称列 / 领涨股列」，标题、表头、涨幅、成交额、图表全部保留
 DARK_REF = (1912, 962)
+# 三列卡片的垂直位置并不一致（右列表格比左列高约 20px，且多一列股票代码），
+# 逐列抠坐标已失败三次。改为整片模糊：顶部导航与底部图表保持清晰，中间全部遮蔽。
+# 牺牲一点信息密度，换取零遗漏——个股名一旦泄露就是合规问题。
 DARK_REGIONS = [
-    (2, 150, 152, 354),      # 左列 涨停板 名称列（代码+股票名）
-    (681, 150, 846, 354),    # 中列 强势未选 名称列
-    (1574, 150, 1746, 354),  # 右列 强势板块 领涨股列
-    (2, 350, 152, 570),      # 左列 10cm涨停 名称列
-    (681, 350, 842, 570),    # 中列 主板涨幅 名称列
-    (1364, 350, 1516, 570),  # 右列 生物制品 名称列
+    (0, 120, 1912, 604),
 ]
 
 # ── 图 2：A股收盘复盘工作台（浅色）────────────────────────────────────
@@ -49,17 +49,34 @@ MOBILE_REGIONS = [
 
 def blur_regions(img, ref_size, regions, radius):
     """按参考尺寸定义的矩形，等比映射到实际尺寸后做高斯模糊。"""
+    for box in _boxes(img, ref_size, regions):
+        img.paste(img.crop(box).filter(ImageFilter.GaussianBlur(radius)), box)
+    return img
+
+
+def pixelate_regions(img, ref_size, regions, block):
+    """马赛克遮蔽。
+
+    大块高斯模糊看起来像「图片糊了」，马赛克则是通用的「刻意遮蔽」视觉语言，
+    观感更专业。block 为马赛克方块边长（原图像素）。
+    """
+    for box in _boxes(img, ref_size, regions):
+        w, h = box[2] - box[0], box[3] - box[1]
+        small = img.crop(box).resize((max(1, w // block), max(1, h // block)), Image.BILINEAR)
+        img.paste(small.resize((w, h), Image.NEAREST), box)
+    return img
+
+
+def _boxes(img, ref_size, regions):
     sx = img.width / ref_size[0]
     sy = img.height / ref_size[1]
+    out = []
     for (x1, y1, x2, y2) in regions:
-        box = (int(x1 * sx), int(y1 * sy), int(x2 * sx), int(y2 * sy))
-        box = (max(0, box[0]), max(0, box[1]),
-               min(img.width, box[2]), min(img.height, box[3]))
-        if box[2] <= box[0] or box[3] <= box[1]:
-            continue
-        crop = img.crop(box).filter(ImageFilter.GaussianBlur(radius))
-        img.paste(crop, box)
-    return img
+        b = (max(0, int(x1 * sx)), max(0, int(y1 * sy)),
+             min(img.width, int(x2 * sx)), min(img.height, int(y2 * sy)))
+        if b[2] > b[0] and b[3] > b[1]:
+            out.append(b)
+    return out
 
 
 def add_badge(img):
@@ -81,11 +98,20 @@ def add_badge(img):
     return img
 
 
-def process(src, dst, ref_size, regions, out_width, radius=9):
-    img = Image.open(os.path.join(OUT, src)).convert("RGB")
-    blur_regions(img, ref_size, regions, radius)
+def process(src, dst, ref_size, regions, out_width, radius=9, mode="blur", block=14):
+    img = Image.open(os.path.join(RAW, src)).convert("RGB")
+    if mode == "pixelate":
+        pixelate_regions(img, ref_size, regions, block)
+    else:
+        blur_regions(img, ref_size, regions, radius)
     ratio = out_width / img.width
     img = img.resize((out_width, int(img.height * ratio)), Image.LANCZOS)
+
+    # 先存一份无角标的干净版给封面脚本（角标要打在封面上，不能跟着截图跑进设备框）
+    os.makedirs(CLEAN, exist_ok=True)
+    img.save(os.path.join(CLEAN, dst), "PNG", optimize=True)
+
+    # 再存带角标的版本给弹窗大图
     add_badge(img)
     img.save(os.path.join(OUT, dst), "PNG", optimize=True)
     print("  %-22s -> %-22s %dx%d  %.0f KB" % (
@@ -95,7 +121,9 @@ def process(src, dst, ref_size, regions, out_width, radius=9):
 
 if __name__ == "__main__":
     print("生成脱敏后的案例图：")
-    process("_raw-stock-dark.png", "stock-workbench-dark.png", DARK_REF, DARK_REGIONS, 1200)
-    process("_raw-stock-light.png", "stock-workbench-light.png", LIGHT_REF, LIGHT_REGIONS, 1200)
+    process("_raw-stock-dark.png", "stock-workbench-dark.png", DARK_REF, DARK_REGIONS, 1200,
+            mode="pixelate", block=15)
+    process("_raw-stock-light.png", "stock-workbench-light.png", LIGHT_REF, LIGHT_REGIONS, 1200,
+            mode="pixelate", block=16)
     process("_raw-checkin.png", "didicheck-mobile.png", MOBILE_REF, MOBILE_REGIONS, 367, radius=7)
     print("\n完成。检查 assets/cases/ 下的输出图。")

@@ -195,7 +195,7 @@ window.SITE_CONFIG = {
       tag: '数据可视化 · 桌面 Web',
       title: 'A股全流程复盘工作台',
       tagline: '把散在五六个网站的数据，收进一屏',
-      cover: 'assets/cases/stock-workbench-dark.png',
+      cover: 'assets/cases/cover-stock-workbench.png',
       gallery: [
         { src: 'assets/cases/stock-workbench-dark.png', caption: '盘中模式 · 涨幅梯队 / 板块强度 / 指数分时叠加' },
         { src: 'assets/cases/stock-workbench-light.png', caption: '复盘模式 · 盘前资讯聚合 / 涨停归因 / 历史对比' }
@@ -214,7 +214,7 @@ window.SITE_CONFIG = {
       tag: '移动端 · PWA',
       title: '多设备收益记账助手',
       tagline: '几台设备同时跑，收益一眼看清',
-      cover: 'assets/cases/didicheck-mobile.png',
+      cover: 'assets/cases/cover-income-tracker.png',
       gallery: [
         { src: 'assets/cases/didicheck-mobile.png', caption: '多设备并列对比 · 日 / 月双维度自动累计' }
       ],
